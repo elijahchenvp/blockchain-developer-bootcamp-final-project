@@ -1,68 +1,71 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Final project - Car Rental Service
 
-## Available Scripts
+## Deployed version url:
 
-In the project directory, you can run:
+http://159.223.79.220:3000/
 
-### `yarn start`
+## How to run this project locally:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Prerequisites
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- Node.js >= v14
+- Truffle and Ganache
+- Npm
+- `git checkout master`
 
-### `yarn test`
+### Contracts
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Run `npm install` in project root to install Truffle build and smart contract dependencies
+- Run `npm install @openzeppelin/contracts`
+- Run local testnet in port `8545` with an Ethereum client, e.g. Ganache
+- `truffle migrate --network development`
+- `truffle console --network development`
+- Run tests in Truffle console: `test`
+- `development` network id is 5777, remember to change it in Metamask as well!
 
-### `yarn build`
+### Frontend
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `cd client`
+- `npm install`
+- `npm run start`
+- Open `http://localhost:3000`
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Screencast link
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+https://youtu.be/enwECpgoQUg
 
-### `yarn eject`
+## Public Ethereum wallet for certification:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`0xE9B0aBC4298c876C1B94E0A65DC944ab44854443`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Project description
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This project is a car rental service that allows user to reserve or release a reserved car.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Simple workflow
 
-## Learn More
+1. Enter service web site
+2. Connect with Metamask
+3. Register as user
+4. Enter vehicle plate no.
+5. Reserve a vehicle or release a reserved vehicle
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Directory structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- `client`: Project's React frontend.
+- `contracts`: Smart contracts that are deployed in the Ropsten testnet.
+- `migrations`: Migration files for deploying contracts in `contracts` directory.
+- `test`: Tests for smart contracts.
 
-### Code Splitting
+## Environment variables (not needed for running project locally)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```
+REACT_APP_RINKEBY_INFURA_URL=""
+REACT_APP_RINKEBY_MNEMONIC=""
+```
 
-### Analyzing the Bundle Size
+## TODO features
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- User payments tracking
+- Vehicle removal
+- Fund withdrawal
