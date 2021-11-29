@@ -1,2 +1,0 @@
-Address: 0xa281292E1eA817Db205F7Df4f63C941823da7c96
-Network: Rinkeby
