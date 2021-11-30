@@ -32,7 +32,7 @@ http://159.223.79.220:3000/
 
 ## Screencast link
 
-https://youtu.be/enwECpgoQUg
+https://www.loom.com/share/5a6a5ab91e014edc93c19145facb6e25
 
 ## Public Ethereum wallet for certification:
 

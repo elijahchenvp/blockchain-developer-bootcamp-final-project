@@ -94,33 +94,48 @@ const App = () => {
   }
 
  const rentCar = async () => {
-  if(walletAddress != ""){
-    if(userRented == "0"){
-      await contract.methods.rentCar(10, plateNo).send({ from: walletAddress });
-    }else{
-      setReserveStatus("You have already reserved a car!");
+  if(plateNo != ""){
+    if(walletAddress != ""){
+      if(userRented == "0"){
+        setReserveStatus("");
+        await contract.methods.rentCar(10, plateNo).send({ from: walletAddress });
+      }else{
+        setReserveStatus("You have already reserved a car!");
+      }
     }
+  }else{
+    setReserveStatus("Please fill in vehicle plate no.!");
   }
 };
 
 const unrentCar = async () => {
-  if(walletAddress != ""){
-    if(userRented == "1"){
-      await contract.methods.unrentCar(plateNo).send({ from: walletAddress });
-    }else{
-      setReserveStatus("You do not have a car reserved!");
+  if(plateNo != ""){
+    if(walletAddress != ""){
+      if(userRented == "1"){
+        setReserveStatus("");
+        await contract.methods.unrentCar(plateNo).send({ from: walletAddress });
+      }else{
+        setReserveStatus("You do not have a car reserved!");
+      }
     }
+  }else{
+    setReserveStatus("Please fill in vehicle plate no.!");
   }
  };
 
 const registerUser = async () => {
-  if(walletAddress != ""){
-    if(userRegistered == "0"){
-      await contract.methods.registerDriver(userName, license).send({ from: walletAddress });
-    }else{
-      setRegStatus("You are already registered!");
-    }
-}
+  if(userName != "" || license != ""){
+    if(walletAddress != ""){
+      if(userRegistered == "0"){
+        setRegStatus("");
+        await contract.methods.registerDriver(userName, license).send({ from: walletAddress });
+      }else{
+        setRegStatus("You are already registered!");
+      }
+     }
+  }else{
+    setRegStatus("Please fill in name and license details!");
+  }
 };
 
 const getUserStatus = async (address) => {
