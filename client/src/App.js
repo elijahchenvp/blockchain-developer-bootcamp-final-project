@@ -139,22 +139,23 @@ const registerUser = async () => {
 };
 
 const getUserStatus = async (address) => {
-  let response = await contract.methods.getRegistrationStatus(address).call();
+  if(address != ""){
+    let response = await contract.methods.getRegistrationStatus(address).call();
 
-  if(response){
-    setRegistrationStatus("User Registered 🟢");
-    setUserRegistered("1");
-  }else{
-    setRegistrationStatus("User Registered 🔴");
-  }
+    if(response){
+      setRegistrationStatus("User Registered 🟢");
+      setUserRegistered("1");
+    }else{
+      setRegistrationStatus("User Registered 🔴");
+    }
 
-  response = await contract.methods.getRentStatus(address).call();
-  if(response){
-    setRentStatus("Car Reserved 🟢");
-  }else{
-    setRentStatus("Car Reserved 🔴");
+    response = await contract.methods.getRentStatus(address).call();
+    if(response){
+      setRentStatus("Car Reserved 🟢");
+    }else{
+      setRentStatus("Car Reserved 🔴");
+    }
   }
-  
 };
 
 const getCurrentWalletConnected = async () => {
