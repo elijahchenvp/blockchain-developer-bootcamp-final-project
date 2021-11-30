@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import { useEffect, useState } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
-import CarSharingContract from "./contracts/CarSharing.json";
-import getWeb3 from "./getWeb3";
 import "./App.css";
+
 const Web3 = require('web3')
 const web3 = new Web3(window.web3.currentProvider);
-
 const contractABI = require("./contracts/CarSharing.json");
-const contractAddress = "0xe1850F5244bD1F9dF72b3f7a8411aFb79de1170F";
+const contractAddress = "0x0cd63bd8F79a5Ee37d8BE920b695098245789c33";
 const contract = new web3.eth.Contract(
 contractABI.abi, contractAddress
 );
@@ -25,13 +22,9 @@ const App = () => {
   const [rentStatus, setRentStatus] = useState("Car Reserved 🔴");
   const [userRegistered, setUserRegistered] = useState("0");
   const [userRented, setUserRented] = useState("0");
-  //const [contract, setContract] = useState("");
-  const [content, setContent] = useState("test");
   const [userName, setUserName] = useState("");
   const [license, setLicense] = useState("");
   const [plateNo, setPlateNo] = useState("");
-  const [web3, setWeb3] = useState("");
-  //state = { message: null, userName: null, userId: null, rentStatus: null, web3: null, accounts: null, contract: null };
   
   useEffect(async () => {
     getCurrentWalletConnected().then((response) => { 
@@ -97,20 +90,6 @@ const App = () => {
     }
   }
 
-  const whenWalletConnected = async () => {
-      const web3 = await getWeb3();
-      
-      // Use web3 to get the user's accounts.
-      const accounts = await web3.eth.getAccounts();
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = CarSharingContract.networks[networkId];
-      const instance = new web3.eth.Contract(
-        CarSharingContract.abi,
-        deployedNetwork && deployedNetwork.address,
-      );  
-      //setContract(instance);
-  };
-
  const rentCar = async () => {
   if(walletAddress != ""){
     if(userRented == "0"){
@@ -159,7 +138,6 @@ const getUserStatus = async (address) => {
   }
   
 };
-
 
 const getCurrentWalletConnected = async () => {
  

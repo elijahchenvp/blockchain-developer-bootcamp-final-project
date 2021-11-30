@@ -1,7 +1,9 @@
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
-// const dotenv = require('dotenv');
-// dotenv.config();
-// const mnemonic = process.env.MNEMONIC;
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+const dotenv = require('dotenv');
+dotenv.config();
+const mnemonic = process.env.REACT_APP_RINKEBY_MNEMONIC;
+const provider = process.env.REACT_APP_RINKEBY_INFURA_URL;
+
 const path = require("path");
 
 module.exports = {
@@ -14,18 +16,18 @@ module.exports = {
       port: "8545",
       network_id: "*"
 
+    },
+    rinkeby: {
+      provider: () => new HDWalletProvider(mnemonic, provider),
+      network_id: "*",
+      gas: 5500000
     }
-    // rinkeby: {
-    //   provider: () => new HDWalletProvider("insert mnemonic", process.env.INFURA_URL),
-    //   network_id: "4",
-    //   gas: 5500000
-    // }
     
   },
 
   compilers: {
     solc: {
-      version: "^0.8.5",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.10",    // Fetch exact version from solc-bin (default: truffle's version)
       }
     }
 };

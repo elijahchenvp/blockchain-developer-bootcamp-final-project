@@ -20,8 +20,6 @@ contract CarSharing is Registerable, Ownable{
 	mapping ( string => Car ) public cars;
 	mapping ( address => uint ) public registered;
 
-	// TODO 
-	// Function to create vehicle records
 	struct Car {
 	bool reserved;
 	address reservedBy;
@@ -35,49 +33,57 @@ contract CarSharing is Registerable, Ownable{
 	bool banned;
   }
 
-
+/// @notice Checks if user is registered
 modifier registeredUser() {
-	// checks if user is registered
 	require(users[msg.sender].registered, "You have to be registered first");
 	_;
 }
 
+/// @notice Checks if driver is currently renting other car
 modifier onlyRentOne() { 
-	// checks if driver is currently renting other car
 	require(!users[msg.sender].rented, "You can only rent 1 car at a time");
 	_;
 }
 
+/// @notice Checks if user is banned
 modifier checkIfBanned() { 
-	// checks if driver is currently renting other car
 	require(!users[msg.sender].banned, "You have been banned, please contact support");
 	_;
 }
 
+/// @notice Checks if user has reserved any cars
 modifier checkIfRented(string memory plateNo) { 
-	// checks if user has rented car
 	require(cars[plateNo].reserved, "You have not rented any car");
 	require(cars[plateNo].reservedBy == msg.sender, "You have not rented any car");
 	_;
 }
 
-
-
-event Received(address accountAddress, uint amount, string message);
+/// @notice Emitted when a user is registered
+/// @param user Account address
+/// @param name Name of user 
+/// @param license Driving license
 event UserRegistered(address user, string name, string license);
+
+/// @notice Emitted when a user reserves a car 
+/// @param user Account address
+/// @param plateNo Reserved car plate no. 
 event CarReserved(address user, string plateNo);
+
+/// @notice Emitted when a user releases a reserved car 
+/// @param user Account address
+/// @param plateNo Reserved car plate no. 
 event CarReleased(address user, string plateNo);
 
-
-fallback() external payable {
-        emit Received(msg.sender, msg.value, "Fallback was called");
-    }
-
+ /// @notice Bans a user with a given wallet address
+ /// @param _user Wallet address of the user
 function banUser(address _user) onlyOwner private
     {
         users[_user].banned = true;
     }
 
+/// @notice Registers a user 
+/// @param name Name of user
+/// @param license Driving license of user
 function registerDriver(string memory name, string memory license) public  {
 	// check if already registered
 	require(!users[msg.sender].registered, "You are already registered");
@@ -96,49 +102,45 @@ function registerDriver(string memory name, string memory license) public  {
 	emit UserRegistered(msg.sender, name, license);
 }
 
+/// @notice Releases a reserved car
+/// @param plateNo Plate No. of reserved car
 function unrentCar(string memory plateNo) public payable registeredUser() checkIfRented(plateNo) checkIfBanned(){
 
-	// return stakeAmount - fees back to user
 	uint refundAmount = balance[msg.sender];
 	balance[msg.sender] = 0;
-
-	// finish rental of car and release the reservation slot
 	users[msg.sender].rented = false;
 	cars[plateNo].reserved = false;
-
 	payable(msg.sender).call{ value: refundAmount};
 	emit CarReleased(msg.sender, plateNo);
 }
 
-
-function rentCar(uint x, string memory plateNo) public payable registeredUser() onlyRentOne() checkIfBanned(){
+/// @notice Reserves a car
+/// @param fee Reserve fee
+/// @param plateNo Plate No. of unreserved car
+function rentCar(uint fee, string memory plateNo) public payable registeredUser() onlyRentOne() checkIfBanned(){
 	
-	// TODO
-	// Set specific payable amount for user to reserve vehicle
-	//balance[msg.sender] += x;
+	balance[msg.sender] += fee;
 	users[msg.sender].rented = true;
 	cars[plateNo].reserved = true;
 	cars[plateNo].reservedBy = msg.sender;
-	// reserves and start rental of car
 	emit CarReserved(msg.sender, plateNo);
 }
 
+/// @notice Return balance of user
 function getBalance() public view returns (uint) {
 	return balance[msg.sender];
-	// reserves and start rental of car
-
 }
 
+/// @notice Return reserve status of user
+/// @param _user Wallet address of user
 function getRentStatus(address _user) public view returns (bool) {
 	return users[_user].rented;
-	// reserves and start rental of car
-
 }
 
+/// @notice Return registration status of user
+/// @param _user Wallet address of user
 function getRegistrationStatus(address _user) public view returns (bool) {
 	return users[_user].registered;
-	// reserves and start rental of car
-
 }
 
 }
