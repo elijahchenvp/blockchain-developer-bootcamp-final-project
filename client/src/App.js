@@ -28,12 +28,15 @@ const App = () => {
   
   useEffect(async () => {
     getCurrentWalletConnected().then((response) => { 
-    
+      if(response.address != ""){
       getUserStatus(response.address); 
       setWallet(response.address);
-      setStatus(response.status);});
-      
+      setStatus(response.status);
       addWalletListener();
+      }
+    });
+      
+      
       addEventListener();
   }, []);
 
@@ -228,6 +231,7 @@ const connectWallet = async () => {
 const connectWalletPressed = async () => {
  await connectWallet().then((response) => {
   getUserStatus(response.address);
+  addWalletListener();
 }, (error) => {
   /**
    * Handle error here
