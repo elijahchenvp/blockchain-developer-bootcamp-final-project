@@ -14,17 +14,28 @@ interface Registerable {
 
 contract CarSharing is Registerable, Ownable{
 
+	/// @notice wallet address mapping to balance of user
 	mapping ( address => uint ) private balance;
+
+	/// @notice wallet address mapping to car rent status of user
 	mapping ( address => uint ) public rentStatus;
+
+	/// @notice wallet address mapping to User struct
 	mapping ( address => User ) public users;
+
+	/// @notice plate No. mapping to Car struct
 	mapping ( string => Car ) public cars;
+
+	/// @notice wallet address mapping to registration status of user
 	mapping ( address => uint ) public registered;
 
+	/// @notice Car struct
 	struct Car {
 	bool reserved;
 	address reservedBy;
 	}
 
+	/// @notice User struct
 	struct User {
     string name;
     string license;
@@ -36,6 +47,12 @@ contract CarSharing is Registerable, Ownable{
 /// @notice Checks if user is registered
 modifier registeredUser() {
 	require(users[msg.sender].registered, "You have to be registered first");
+	_;
+}
+
+/// @notice Checks if user is unregistered
+modifier unregisteredUser() {
+	require(!users[msg.sender].registered, "You are already registered");
 	_;
 }
 
@@ -84,13 +101,8 @@ function banUser(address _user) onlyOwner private
 /// @notice Registers a user 
 /// @param name Name of user
 /// @param license Driving license of user
-function registerDriver(string memory name, string memory license) public  {
-	// check if already registered
-	require(!users[msg.sender].registered, "You are already registered");
+function registerDriver(string memory name, string memory license) public unregisteredUser() {
 
-	//registered[msg.sender] = 1;
-
-	// registers driver
 	users[msg.sender] = User({
      name: name, 
      license: license,
