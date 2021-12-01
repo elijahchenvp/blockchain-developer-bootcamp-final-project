@@ -3,12 +3,19 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 const Web3 = require('web3')
-const web3 = new Web3(window.web3.currentProvider);
-const contractABI = require("./contracts/CarSharing.json");
-const contractAddress = "0x0cd63bd8F79a5Ee37d8BE920b695098245789c33";
-const contract = new web3.eth.Contract(
-contractABI.abi, contractAddress
+var web3;
+var contract;
+if(window.web3 != undefined) 
+{
+  web3 = new Web3(window.web3.currentProvider);
+  const contractABI = require("./contracts/CarSharing.json");
+  const contractAddress = "0x0cd63bd8F79a5Ee37d8BE920b695098245789c33";
+  contract = new web3.eth.Contract(
+  contractABI.abi, contractAddress
 );
+}
+
+
 
 
 const App = () => {
@@ -27,6 +34,8 @@ const App = () => {
   const [plateNo, setPlateNo] = useState("");
   
   useEffect(async () => {
+    if(window.web3 != undefined) 
+  { 
     getCurrentWalletConnected().then((response) => { 
       if(response.address != ""){
       getUserStatus(response.address); 
@@ -36,8 +45,19 @@ const App = () => {
       }
     });
       
-      
       addEventListener();
+  }else{
+    setStatus(
+      <p>
+        {" "}
+        🦊{" "}
+        <a target="_blank" href={`https://metamask.io/download.html`}>
+          You must install Metamask, a virtual Ethereum wallet, in your
+          browser.
+        </a>
+      </p>
+    );
+  }
   }, []);
 
   function addEventListener() {
@@ -94,6 +114,7 @@ const App = () => {
   }
 
  const rentCar = async () => {
+   
   if(plateNo != ""){
     if(walletAddress != ""){
       if(userRented == "0"){
